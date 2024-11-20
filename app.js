@@ -1,18 +1,22 @@
 const express = require("express");
+const bodyParser = require("body-parser");
+const userController = require("./controllers/UserController");
+
 const app = express();
 const port = 3000;
-const userController = require("./controllers/UserController");
-const authController = require("./controllers/AuthController");
 
-app.use(express.json());
+// Middleware untuk parsing JSON
+app.use(bodyParser.json());
+
+// Endpoint utama untuk mengecek status API
 app.get("/", (req, res) => {
-    res.send("Forum Tani ID API is Up");
+  res.send("User API is Running");
 });
 
+// Routing untuk user
 app.use("/api/users", userController);
 
-app.use("/api/auth", authController);
-
+// Jalankan server
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });
