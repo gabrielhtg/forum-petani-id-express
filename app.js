@@ -2,9 +2,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const userController = require("./controllers/UserController");
 const authController = require("./controllers/AuthController");
+const cors = require("cors");
 
 const app = express();
 const port = 3000;
+
+app.use(cors());
 
 // Middleware untuk parsing JSON
 app.use(bodyParser.json());
