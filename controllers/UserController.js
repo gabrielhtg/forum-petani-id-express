@@ -3,12 +3,13 @@
 const express = require("express");
 const { getAll, create, getById, removeUser, updateUser } = require("../service/UserService"); // Pastikan import updateUser
 const router = express.Router();
+const authMiddleware = require("../middleware/AuthMiddleware");
 
 
-router.get("/", getAll);
-router.post("/", create);
-router.get("/:id", getById);
-router.delete("/:id", removeUser);
-router.put("/:id", updateUser); 
+router.get("/",authMiddleware, getAll);
+router.post("/",authMiddleware, create);
+router.get("/:id",authMiddleware, getById);
+router.delete("/:id",authMiddleware, removeUser);
+router.put("/:id",authMiddleware, updateUser);
 
 module.exports = router;

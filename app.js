@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const userController = require("./controllers/UserController");
+const authController = require("./controllers/AuthController");
 
 const app = express();
 const port = 3000;
@@ -13,8 +14,8 @@ app.get("/", (req, res) => {
   res.send("User API is Running");
 });
 
-// Routing untuk user
 app.use("/api/users", userController);
+app.use("/api/auth", authController);
 
 // Jalankan server
 app.listen(port, () => {
