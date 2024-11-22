@@ -42,25 +42,30 @@ const queries = [
     gambar BLOB,                                  
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP                         
-);
-    `
+)`,
+  `CREATE TABLE IF NOT EXISTS Tag_Produk (
+        tagId VARCHAR(255) INTEGER PRIMARY KEY AUTO_INCREMENT,
+        uploaderId VARCHAR(255) NOT NULL,
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    )`,
 ];
 
 (async () => {
-    const connection = await mysql.createConnection(config);
+  const connection = await mysql.createConnection(config);
 
-    try {
-        console.log('Migration dimulai!');
+  try {
+    console.log("Migration dimulai!");
 
-        for (const e of queries) {
-            await connection.query(e)
-            console.log(`Query berhasil dieksekusi: ${e}\n`)
-        }
-
-        console.log('Migrasi berhasil!');
-    } catch (error) {
-        console.error('Terjadi kesalahan saat migrasi:', error);
-    } finally {
-        await connection.end();
+    for (const e of queries) {
+      await connection.query(e);
+      console.log(`Query berhasil dieksekusi: ${e}\n`);
     }
+
+    console.log("Migrasi berhasil!");
+  } catch (error) {
+    console.error("Terjadi kesalahan saat migrasi:", error);
+  } finally {
+    await connection.end();
+  }
 })();
