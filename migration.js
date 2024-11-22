@@ -34,17 +34,17 @@ const queries = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )`,
-    `
-    CREATE TABLE Content (
-    contentId INTEGER PRIMARY KEY AUTO_INCREMENT,
-    uploaderId VARCHAR(255) NOT NULL,            
-    caption TEXT,                                
-    gambar BLOB,                                  
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP                         
-)`,
-  `CREATE TABLE IF NOT EXISTS Tag_Produk (
-        tagId VARCHAR(255) INTEGER PRIMARY KEY AUTO_INCREMENT,
+    `CREATE TABLE post (
+        id int PRIMARY KEY AUTO_INCREMENT,
+        uploaderId VARCHAR(255) NOT NULL,            
+        caption TEXT,                                
+        gambar BLOB,                                  
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP                         
+    )`,
+    `CREATE TABLE IF NOT EXISTS product_tag (
+        id int PRIMARY KEY AUTO_INCREMENT,
+        tag VARCHAR(100) not NULL,
         uploaderId VARCHAR(255) NOT NULL,
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
         updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
