@@ -7,7 +7,6 @@ const config = {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
     waitForConnections: true,
     connectionLimit: 10,
     maxIdle: 10,
@@ -18,6 +17,9 @@ const config = {
 };
 
 const queries = [
+    `DROP DATABASE forum_tani_id`,
+    `CREATE DATABASE forum_tani_id`,
+    `USE forum_tani_id`,
     `CREATE TABLE IF NOT EXISTS users (
         id INT PRIMARY KEY AUTO_INCREMENT,
         name varchar(100) NOT NULL,

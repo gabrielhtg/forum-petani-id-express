@@ -7,7 +7,7 @@ const authMiddleware = require("../middleware/AuthMiddleware");
 
 
 router.get("/",authMiddleware, getAll);
-router.post("/",authMiddleware, create);
+router.post("/", create);
 router.get("/:id",authMiddleware, getById);
 router.delete("/:id",authMiddleware, removeUser);
 router.put("/:id",authMiddleware, updateUser);
