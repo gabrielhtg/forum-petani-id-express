@@ -28,9 +28,20 @@ const queries = [
         username VARCHAR(50) NOT NULL UNIQUE,
         email VARCHAR(100) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
+        nomor_telepon VARCHAR(15),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    )`
+    )`,
+    `
+    CREATE TABLE Content (
+    contentId INTEGER PRIMARY KEY AUTO_INCREMENT,
+    uploaderId VARCHAR(255) NOT NULL,            
+    caption TEXT,                                
+    gambar BLOB,                                  
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP                         
+);
+    `
 ];
 
 (async () => {

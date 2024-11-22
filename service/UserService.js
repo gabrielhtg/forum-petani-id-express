@@ -14,7 +14,7 @@ const getAll = async (req, res) => {
 
 // Fungsi untuk membuat user baru
 const create = async (req, res) => {
-    const { name, pekerjaan, username, email, password } = req.body;
+    const { name, pekerjaan, username, email, password, nomor_telepon } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
@@ -27,8 +27,8 @@ const create = async (req, res) => {
         }
 
         const [rows] = await pool.query(`
-            INSERT INTO users (name, pekerjaan, username, email, password)
-            VALUES ('${name}', '${pekerjaan}', '${username}', '${email}', '${hashedPassword}') 
+            INSERT INTO users (name, pekerjaan, username, email, password, nomor_telepon)
+            VALUES ('${name}', '${pekerjaan}', '${username}', '${email}', '${hashedPassword}', '${nomor_telepon}') 
         `);
         return res.status(200).json({ data: `Pendaftaran berhasil!` });
     } catch (error) {
