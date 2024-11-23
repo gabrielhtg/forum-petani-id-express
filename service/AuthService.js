@@ -25,7 +25,7 @@ const login = async (req, res) => {
             return res.status(401).json({ message: 'Password salah.' });
         }
 
-        const token = generateToken(user.id, user.name, user.username);
+        const token = generateToken(user.name, user.username);
         return res.status(200).json({
             data: {
                 name: user.name,
