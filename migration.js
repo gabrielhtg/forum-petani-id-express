@@ -34,7 +34,7 @@ const queries = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )`,
-    `CREATE TABLE post (
+    `CREATE TABLE posts (
         id int PRIMARY KEY AUTO_INCREMENT,
         uploaderId VARCHAR(255) NOT NULL,            
         caption TEXT,                                
@@ -49,6 +49,18 @@ const queries = [
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
         updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )`,
+    `CREATE TABLE comments (
+        id INT AUTO_INCREMENT PRIMARY KEY,             -- ID unik untuk setiap komentar
+        post_id INT NOT NULL,                          -- ID postingan yang dikomentari
+        user_id INT NOT NULL,                          -- ID pengguna yang mengomentari
+        parent_comment_id INT DEFAULT NULL,            -- ID komentar induk (untuk balasan)
+        content TEXT NOT NULL,                         -- Isi komentar
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Waktu pembuatan komentar
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Waktu pembaruan
+        FOREIGN KEY (post_id) REFERENCES posts(id),    -- Relasi ke tabel posts
+        FOREIGN KEY (user_id) REFERENCES users(id),    -- Relasi ke tabel users
+        FOREIGN KEY (parent_comment_id) REFERENCES comments(id) -- Relasi untuk nested comments
+    );`
 ];
 
 (async () => {
