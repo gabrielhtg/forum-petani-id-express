@@ -1,7 +1,6 @@
 const pool = require("../config/database");
 const bcrypt = require("bcrypt");
 
-// Fungsi untuk mendapatkan semua user
 const getAll = async (req, res) => {
     try {
         const [rows] = await pool.query("SELECT * FROM users");
@@ -12,7 +11,6 @@ const getAll = async (req, res) => {
     }
 };
 
-// Fungsi untuk membuat user baru
 const create = async (req, res) => {
     const { name, pekerjaan, username, email, password, nomor_telepon } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -37,12 +35,11 @@ const create = async (req, res) => {
     }
 };
 
-// Fungsi untuk mendapatkan user berdasarkan ID
 const getById = async (req, res) => {
     const id = req.params.id;
 
     try {
-        const [rows] = await pool.query(`SELECT * FROM users WHERE id = ${id}`);
+        const [rows] = await pool.query(`SELECT * FROM users WHERE username = "${id}"`);
         if (rows.length === 0) {
             return res.status(404).json({
                 status: 404,

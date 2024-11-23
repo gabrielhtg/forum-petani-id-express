@@ -1,6 +1,7 @@
 const pool = require("../config/database");
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
+require("dotenv").config();
 
 const generateToken = (userId, name, username) => {
     return jwt.sign({ id: userId, name: name, username: username }, process.env.JWT_SECRET, {
@@ -42,5 +43,5 @@ const login = async (req, res) => {
 };
 
 module.exports = {
-    login,
+    login
 }
