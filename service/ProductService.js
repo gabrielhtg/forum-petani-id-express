@@ -21,7 +21,7 @@ const create = async (req, res) => {
         uploader_id
     } = req.body;
 
-    const picturePath = req.file ? `public/products/${req.file.filename}` : null;
+    const picturePath = req.file ? `products/${req.file.filename}` : null;
 
     try {
         const [rows] = await pool.query(`

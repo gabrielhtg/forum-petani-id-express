@@ -21,6 +21,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", userController);
 app.use("/api/auth", authController);
 app.use("/api/products", productController);
+app.use(express.static('public'))
 
 // Jalankan server
 app.listen(port, () => {
