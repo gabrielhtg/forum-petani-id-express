@@ -20,7 +20,7 @@ const queries = [
     `DROP DATABASE forum_tani_id`,
     `CREATE DATABASE forum_tani_id`,
     `USE forum_tani_id`,
-    `CREATE TABLE IF NOT EXISTS users (
+    `CREATE TABLE users (
         id INT PRIMARY KEY AUTO_INCREMENT,
         name varchar(100) NOT NULL,
         pekerjaan varchar(100) not null,
@@ -42,12 +42,12 @@ const queries = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP                         
     )`,
-    `CREATE TABLE IF NOT EXISTS product_tag (
+    `CREATE TABLE product_tag (
         id int PRIMARY KEY AUTO_INCREMENT,
         tag VARCHAR(100) not NULL,
-        uploaderId VARCHAR(255) NOT NULL,
-        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        uploader_id VARCHAR(255) NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )`,
     `CREATE TABLE comments (
         id INT AUTO_INCREMENT PRIMARY KEY,             -- ID unik untuk setiap komentar
@@ -60,6 +60,19 @@ const queries = [
         FOREIGN KEY (post_id) REFERENCES posts(id),    -- Relasi ke tabel posts
         FOREIGN KEY (user_id) REFERENCES users(id),    -- Relasi ke tabel users
         FOREIGN KEY (parent_comment_id) REFERENCES comments(id) -- Relasi untuk nested comments
+    );`,
+    `CREATE TABLE products(
+        id int auto_increment primary key,
+        nama varchar(255) NOT NULL,
+        picture varchar(255) NOT NULL,
+        description varchar(1000) not NULL,
+        harga int not null,
+        lokasi varchar(100) not null,
+        whatsapp_number varchar(15) not null,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        uploader_id int,
+        foreign key (uploader_id) references users(id)
     );`
 ];
 
