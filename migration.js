@@ -21,13 +21,13 @@ const queries = [
     `CREATE DATABASE forum_tani_id`,
     `USE forum_tani_id`,
     `CREATE TABLE users (
-        id INT PRIMARY KEY AUTO_INCREMENT,
+        username VARCHAR(50) NOT NULL UNIQUE PRIMARY KEY,
         name varchar(100) NOT NULL,
         pekerjaan varchar(100) not null,
         total_post int,
         total_jawaban int,
         foto_profil varchar(255),
-        username VARCHAR(50) NOT NULL UNIQUE,
+        
         email VARCHAR(100) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
         nomor_telepon VARCHAR(15),
@@ -52,13 +52,13 @@ const queries = [
     `CREATE TABLE comments (
         id INT AUTO_INCREMENT PRIMARY KEY,             -- ID unik untuk setiap komentar
         post_id INT NOT NULL,                          -- ID postingan yang dikomentari
-        user_id INT NOT NULL,                          -- ID pengguna yang mengomentari
+        user_id varchar(50),                          -- ID pengguna yang mengomentari
         parent_comment_id INT DEFAULT NULL,            -- ID komentar induk (untuk balasan)
         content TEXT NOT NULL,                         -- Isi komentar
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Waktu pembuatan komentar
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Waktu pembaruan
         FOREIGN KEY (post_id) REFERENCES posts(id),    -- Relasi ke tabel posts
-        FOREIGN KEY (user_id) REFERENCES users(id),    -- Relasi ke tabel users
+        FOREIGN KEY (user_id) REFERENCES users(username),    -- Relasi ke tabel users
         FOREIGN KEY (parent_comment_id) REFERENCES comments(id) -- Relasi untuk nested comments
     );`,
     `CREATE TABLE products(
@@ -71,8 +71,8 @@ const queries = [
         whatsapp_number varchar(15) not null,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        uploader_id int,
-        foreign key (uploader_id) references users(id)
+        uploader_id VARCHAR(50),
+        foreign key (uploader_id) references users(username)
     );`
 ];
 
