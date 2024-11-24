@@ -5,10 +5,10 @@ const {
   getById,
   remove,
   update,
-} = require("../service/ProductService");
-const router = express.Router();
+} = require("../service/PostService");
 const authMiddleware = require("../middleware/AuthMiddleware");
 const upload = require("../middleware/UploadProductMiddleware");
+const router = express.Router();
 
 router.get("/", authMiddleware, getAll);
 router.post("/", upload.single("picture"), authMiddleware, create);
