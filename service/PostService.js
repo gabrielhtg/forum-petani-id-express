@@ -17,26 +17,37 @@ const create = async (req, res) => {
     return res.status(400).send("Tidak ada gambar diupload!");
   }
 
-  // Menangani array file yang di-upload
-  const filePaths = req.files.map((file) => file.path);
+  const fileNames = req.files.map((file) => file.filename);
 
-  const picturePath = req.file ? `products/${req.file.filename}` : null;
-
+  console.log(fileNames);
   try {
     const [user] = await pool.query(`
             SELECT * FROM users WHERE username = '${username}'
         `);
 
     const [post] = await pool.query(`
-            INSERT INTO products (
+            INSERT INTO posts (
                 uploader_id,
-                caption,
+                caption
                 )
             VALUES (
-                '${username}', 
-                '${caption}', 
+                "${username}", 
+                "${caption}"
                 ) 
         `);
+
+    const imageInsertQueries = fileNames.map(async (name) => {
+      await pool.query(
+        `
+        INSERT INTO post_images (postId, path)
+        VALUES (?, ?)`,
+        [post.insertId, `posts/${name}`],
+      );
+    });
+
+    // Tunggu semua operasi insert gambar selesai
+    await Promise.all(imageInsertQueries);
+
     return res.status(200).json({ data: `Post berhasil dibuat!` });
   } catch (error) {
     console.log(error);
