@@ -11,31 +11,36 @@ const getAll = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const { uploader, description, harga, lokasi, whatsapp_number, uploader_id } =
-    req.body;
+  const { username, caption } = req.body;
+
+  if (!req.files) {
+    return res.status(400).send("Tidak ada gambar diupload!");
+  }
+
+  // Menangani array file yang di-upload
+  const filePaths = req.files.map((file) => file.path);
 
   const picturePath = req.file ? `products/${req.file.filename}` : null;
 
   try {
-    const [rows] = await pool.query(`
+    const [user] = await pool.query(`
+            SELECT * FROM users WHERE username = '${username}'
+        `);
+
+    const [post] = await pool.query(`
             INSERT INTO products (
                 uploader_id,
                 caption,
                 )
             VALUES (
-                '${nama}', 
-                '${picturePath}', 
-                '${description}', 
-                '${harga}', 
-                '${lokasi}', 
-                '${whatsapp_number}',
-                '${uploader_id}'
+                '${username}', 
+                '${caption}', 
                 ) 
         `);
-    return res.status(200).json({ data: `Product ${nama} berhasil dibuat!` });
+    return res.status(200).json({ data: `Post berhasil dibuat!` });
   } catch (error) {
     console.log(error);
-    return res.status(400).json({ message: "Gagal membuat produk!" });
+    return res.status(400).json({ message: "Gagal membuat post!" });
   }
 };
 
