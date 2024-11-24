@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const userController = require("./controllers/UserController");
 const authController = require("./controllers/AuthController");
 const productController = require("./controllers/ProductController");
+const postController = require("./controllers/PostController");
 const cors = require("cors");
 
 const app = express();
@@ -21,7 +22,8 @@ app.get("/", (req, res) => {
 app.use("/api/users", userController);
 app.use("/api/auth", authController);
 app.use("/api/products", productController);
-app.use(express.static('public'))
+app.use("/api/posts", postController);
+app.use(express.static("public"));
 
 // Jalankan server
 app.listen(port, () => {

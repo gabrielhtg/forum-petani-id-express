@@ -19,13 +19,9 @@ const create = async (req, res) => {
   try {
     const [rows] = await pool.query(`
             INSERT INTO products (
-                nama,
-                picture,
-                description,
-                harga,
-                lokasi,
-                whatsapp_number,
-                uploader_id
+                uploader_id,
+                caption,
+                
                 )
             VALUES (
                 '${nama}', 
