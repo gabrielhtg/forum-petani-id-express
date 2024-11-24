@@ -27,10 +27,10 @@ const queries = [
         total_post int,
         total_jawaban int,
         foto_profil varchar(255),
-        
         email VARCHAR(100) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
         nomor_telepon VARCHAR(15),
+        role
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )`,
