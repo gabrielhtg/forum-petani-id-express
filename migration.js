@@ -38,7 +38,8 @@ const queries = [
         id int PRIMARY KEY AUTO_INCREMENT,
         uploaderId VARCHAR(255) NOT NULL,            
         caption TEXT,                                
-        gambar BLOB,                                  
+        gambar BLOB,
+        likes int DEFAULT 0,                                  
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP                         
     )`,
