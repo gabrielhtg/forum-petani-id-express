@@ -1,5 +1,6 @@
 const mysql = require("mysql2/promise");
 const dotenv = require("dotenv");
+const bcrypt = require("bcrypt");
 
 dotenv.config();
 
@@ -35,12 +36,12 @@ const queries = [
     )`,
   `CREATE TABLE posts (
         id int PRIMARY KEY AUTO_INCREMENT,
-        uploaderId VARCHAR(50),            
+        uploader_id VARCHAR(50),            
         caption TEXT,                                
         likes int DEFAULT 0,                                  
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        FOREIGN KEY (uploaderId) REFERENCES users(username) ON DELETE CASCADE
+        FOREIGN KEY (uploader_id) REFERENCES users(username) ON DELETE CASCADE
     )`,
   `CREATE TABLE post_images (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -94,6 +95,15 @@ const queries = [
       await connection.query(e);
       console.log(`Query berhasil dieksekusi: ${e}\n`);
     }
+
+    const hashedPassword = await bcrypt.hash("admin", 10);
+
+    // Insert user admin ke dalam tabel users
+    const adminQuery = `
+      INSERT INTO users (username, name, pekerjaan, email, password, nomor_telepon)
+      VALUES ('admin', 'Admin User', 'Admin', 'admin@forumtani.com', ?, '081234567890');
+    `;
+    await connection.query(adminQuery, [hashedPassword]);
 
     console.log("Migrasi berhasil!");
   } catch (error) {

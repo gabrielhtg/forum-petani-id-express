@@ -11,7 +11,7 @@ const getAll = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const { nama, description, harga, lokasi, whatsapp_number, uploader_id } =
+  const { uploader, description, harga, lokasi, whatsapp_number, uploader_id } =
     req.body;
 
   const picturePath = req.file ? `products/${req.file.filename}` : null;
@@ -21,7 +21,6 @@ const create = async (req, res) => {
             INSERT INTO products (
                 uploader_id,
                 caption,
-                
                 )
             VALUES (
                 '${nama}', 
