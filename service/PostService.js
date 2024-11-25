@@ -2,11 +2,24 @@ const pool = require("../config/database");
 
 const getAll = async (req, res) => {
   try {
-    const [rowsPosts] = await pool.query("SELECT * FROM posts");
-    const [rowsImages] = await pool.query(
-      "SELECT * FROM post_images where post_id = '${}'",
-    );
-    return res.status(200).json({ data: rows });
+    const [rowsPosts] = await pool.query(`
+       SELECT
+          posts.id AS post_id,
+          posts.caption,
+          posts.likes,
+          posts.created_at AS post_created_at,
+          users.username,
+          users.name,
+          users.pekerjaan,
+          users.email,
+          users.foto_profil
+      FROM
+          posts
+      JOIN
+          users
+      ON
+          posts.uploader_id = users.username;`);
+    return res.status(200).json({ data: rowsPosts });
   } catch (error) {
     console.error(error);
     return res.status(400).json({ message: "Gagal untuk mendapatkan posts!" });
@@ -56,7 +69,7 @@ const create = async (req, res) => {
     const imageInsertQueries = fileNames.map(async (name) => {
       await pool.query(
         `
-        INSERT INTO post_images (postId, path)
+        INSERT INTO post_images (post_id, path)
         VALUES (?, ?)`,
         [post.insertId, `posts/${name}`],
       );

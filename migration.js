@@ -46,7 +46,7 @@ const queries = [
   `CREATE TABLE post_images (
         id INT PRIMARY KEY AUTO_INCREMENT,
         post_id INT,                        
-        path VARCHAR(255) NOT NULL,   
+        path VARCHAR(255) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
