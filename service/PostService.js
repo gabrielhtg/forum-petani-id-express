@@ -2,11 +2,11 @@ const pool = require("../config/database");
 
 const getAll = async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM products");
+    const [rows] = await pool.query("SELECT * FROM posts");
     return res.status(200).json({ data: rows });
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ message: "Gagal untuk mendapatkan produk!" });
+    return res.status(400).json({ message: "Gagal untuk mendapatkan posts!" });
   }
 };
 
