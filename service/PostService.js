@@ -2,8 +2,25 @@ const pool = require("../config/database");
 
 const getAll = async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM posts");
+    const [rowsPosts] = await pool.query("SELECT * FROM posts");
+    const [rowsImages] = await pool.query(
+      "SELECT * FROM post_images where post_id = '${}'",
+    );
     return res.status(200).json({ data: rows });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: "Gagal untuk mendapatkan posts!" });
+  }
+};
+
+const getAllPicturesById = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const [rowsImages] = await pool.query(
+      `SELECT * FROM post_images where post_id = '${id}'`,
+    );
+    return res.status(200).json({ data: rowsImages });
   } catch (error) {
     console.error(error);
     return res.status(400).json({ message: "Gagal untuk mendapatkan posts!" });
@@ -142,4 +159,5 @@ module.exports = {
   getById,
   remove,
   update,
+  getAllPicturesById,
 };

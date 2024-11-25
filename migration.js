@@ -45,11 +45,11 @@ const queries = [
     )`,
   `CREATE TABLE post_images (
         id INT PRIMARY KEY AUTO_INCREMENT,
-        postId INT,                        
+        post_id INT,                        
         path VARCHAR(255) NOT NULL,   
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        FOREIGN KEY (postId) REFERENCES posts(id) ON DELETE CASCADE
+        FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
     );`,
   `CREATE TABLE product_tag (
         id int PRIMARY KEY AUTO_INCREMENT,
