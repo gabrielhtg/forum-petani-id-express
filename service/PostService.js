@@ -18,7 +18,8 @@ const getAll = async (req, res) => {
       JOIN
           users
       ON
-          posts.uploader_id = users.username;`);
+          posts.uploader_id = users.username
+      order by post_created_at desc;`);
     return res.status(200).json({ data: rowsPosts });
   } catch (error) {
     console.error(error);
@@ -49,7 +50,6 @@ const create = async (req, res) => {
 
   const fileNames = req.files.map((file) => file.filename);
 
-  console.log(fileNames);
   try {
     const [user] = await pool.query(`
             SELECT * FROM users WHERE username = '${username}'
