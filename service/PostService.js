@@ -47,6 +47,54 @@ const getAll = async (req, res) => {
   }
 };
 
+const getAllSortedByLikes = async (req, res) => {
+  try {
+    const [rowsPosts] = await pool.query(`
+      SELECT
+        posts.id AS post_id,
+        posts.caption,
+        IFNULL(COUNT(DISTINCT post_likes.id), 0) AS total_likes,
+        IFNULL(COUNT(DISTINCT comments.id), 0) AS total_comments,
+        posts.created_at AS post_created_at,
+        users.username,
+        users.name,
+        users.pekerjaan,
+        users.email,
+        users.foto_profil,
+        JSON_ARRAYAGG(DISTINCT post_likes.user_id) AS liked_users,
+        JSON_ARRAYAGG(
+          DISTINCT JSON_OBJECT(
+            'comment_id', comments.id,
+            'comment_text', comments.content,
+            'commenter_username', comments.user_id,
+            'commenter_name', commenter.name,
+            'commenter_foto_profil', commenter.foto_profil, 
+            'comment_created_at', comments.created_at
+          )
+        ) AS comments 
+      FROM
+        posts
+      JOIN
+        users ON posts.uploader_id = users.username
+      LEFT JOIN
+        post_likes ON posts.id = post_likes.post_id
+      LEFT JOIN
+        comments ON posts.id = comments.post_id 
+      LEFT JOIN
+        users AS commenter ON comments.user_id = commenter.username 
+      GROUP BY
+        posts.id, posts.caption, posts.created_at, users.username, users.name, users.pekerjaan, users.email, users.foto_profil
+      ORDER BY
+        total_likes DESC;
+    `);
+
+    return res.status(200).json({ data: rowsPosts });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: "Gagal untuk mendapatkan posts!" });
+  }
+};
+
 const getAllPicturesById = async (req, res) => {
   try {
     const id = req.params.id;
@@ -197,4 +245,5 @@ module.exports = {
   remove,
   update,
   getAllPicturesById,
+  getAllSortedByLikes,
 };

@@ -80,7 +80,7 @@ const queries = [
         id int auto_increment primary key,
         nama varchar(255) NOT NULL,
         picture varchar(255) NOT NULL,
-        description varchar(1000) not NULL,
+        description text not NULL,
         harga int not null,
         lokasi varchar(100) not null,
         whatsapp_number varchar(15) not null,
