@@ -67,16 +67,14 @@ const queries = [
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )`,
   `CREATE TABLE comments (
-        id INT AUTO_INCREMENT PRIMARY KEY,             -- ID unik untuk setiap komentar
-        post_id INT NOT NULL,                          -- ID postingan yang dikomentari
-        user_id varchar(50),                          -- ID pengguna yang mengomentari
-        parent_comment_id INT DEFAULT NULL,            -- ID komentar induk (untuk balasan)
-        content TEXT NOT NULL,                         -- Isi komentar
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Waktu pembuatan komentar
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Waktu pembaruan
-        FOREIGN KEY (post_id) REFERENCES posts(id),    -- Relasi ke tabel posts
-        FOREIGN KEY (user_id) REFERENCES users(username) ON DELETE CASCADE,    -- Relasi ke tabel users
-        FOREIGN KEY (parent_comment_id) REFERENCES comments(id) -- Relasi untuk nested comments
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        post_id INT NOT NULL, 
+        user_id varchar(50),
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (post_id) REFERENCES posts(id), 
+        FOREIGN KEY (user_id) REFERENCES users(username) ON DELETE CASCADE
     );`,
   `CREATE TABLE products(
         id int auto_increment primary key,
