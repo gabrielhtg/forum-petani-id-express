@@ -11,8 +11,8 @@ const authMiddleware = require("../middleware/AuthMiddleware");
 const upload = require("../middleware/UploadPostPictureMiddleware");
 const router = express.Router();
 
-router.get("/", authMiddleware, getAll);
-router.get("/pictures/:id", authMiddleware, getAllPicturesById);
+router.get("/", getAll);
+router.get("/pictures/:id", getAllPicturesById);
 router.post("/", upload.array("files", 10), authMiddleware, create);
 router.get("/:id", authMiddleware, getById);
 router.delete("/:id", authMiddleware, remove);

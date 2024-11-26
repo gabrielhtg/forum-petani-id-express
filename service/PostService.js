@@ -4,22 +4,25 @@ const getAll = async (req, res) => {
   try {
     const [rowsPosts] = await pool.query(`
        SELECT
-          posts.id AS post_id,
-          posts.caption,
-          posts.likes,
-          posts.created_at AS post_created_at,
-          users.username,
-          users.name,
-          users.pekerjaan,
-          users.email,
-          users.foto_profil
+        posts.id AS post_id,
+        posts.caption,
+        IFNULL(COUNT(post_likes.id), 0) AS total_likes,
+        posts.created_at AS post_created_at,
+        users.username,
+        users.name,
+        users.pekerjaan,
+        users.email,
+        users.foto_profil
       FROM
-          posts
+        posts
       JOIN
-          users
-      ON
-          posts.uploader_id = users.username
-      order by post_created_at desc;`);
+        users ON posts.uploader_id = users.username
+      LEFT JOIN
+        post_likes ON posts.id = post_likes.post_id
+      GROUP BY
+        posts.id, posts.caption, posts.created_at, users.username, users.name, users.pekerjaan, users.email, users.foto_profil
+      ORDER BY
+        post_created_at DESC;`);
     return res.status(200).json({ data: rowsPosts });
   } catch (error) {
     console.error(error);
@@ -54,6 +57,10 @@ const create = async (req, res) => {
     const [user] = await pool.query(`
             SELECT * FROM users WHERE username = '${username}'
         `);
+
+    const [updateUser] = await pool.query(`
+        UPDATE users SET total_post=${user[0].total_post + 1} where username = '${username}';
+    `);
 
     const [post] = await pool.query(`
             INSERT INTO posts (

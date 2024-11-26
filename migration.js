@@ -25,8 +25,8 @@ const queries = [
         username VARCHAR(50) NOT NULL UNIQUE PRIMARY KEY,
         name varchar(100) NOT NULL,
         pekerjaan varchar(100) not null,
-        total_post int,
-        total_jawaban int,
+        total_post int DEFAULT 0,
+        total_jawaban int DEFAULT 0,
         foto_profil varchar(255),
         email VARCHAR(100) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
@@ -51,6 +51,14 @@ const queries = [
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
     );`,
+  `CREATE TABLE post_likes (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      post_id INT NOT NULL,
+      user_id VARCHAR(50) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+      FOREIGN KEY (user_id) REFERENCES users(username) ON DELETE CASCADE
+  );`,
   `CREATE TABLE product_tag (
         id int PRIMARY KEY AUTO_INCREMENT,
         tag VARCHAR(100) not NULL,
