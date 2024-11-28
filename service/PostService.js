@@ -179,23 +179,21 @@ const remove = async (req, res) => {
   const id = req.params.id;
 
   try {
-    const [product] = await pool.query(
-      `SELECT * FROM products WHERE id = ${id}`,
-    );
+    const [product] = await pool.query(`SELECT * FROM posts WHERE id = ${id}`);
     if (product.length === 0) {
       return res.status(404).json({
         status: 404,
-        data: `Produk tidak ditemukan!`,
+        data: `Post tidak ditemukan!`,
       });
     }
 
-    await pool.query(`DELETE FROM products WHERE id = ${id}`);
+    await pool.query(`DELETE FROM posts WHERE id = ${id}`);
     return res.status(200).json({ status: "ok", data: product });
   } catch (error) {
     console.error(error);
     return res
       .status(404)
-      .json({ message: "Gagal menghapus user. Error tidak diketahui." });
+      .json({ message: "Gagal menghapus post. Error tidak diketahui." });
   }
 };
 

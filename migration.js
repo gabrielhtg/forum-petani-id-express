@@ -111,6 +111,12 @@ const queries = [
     `;
     await connection.query(adminQuery, [hashedPassword]);
 
+    const gabrielQuery = `
+      INSERT INTO users (username, name, pekerjaan, email, password, nomor_telepon)
+      VALUES ('gabrielhtg', 'Gabriel Cesar Hutagalung', 'Mahasiswa', 'gabrielhutagalung970@gmail.com', ?, '082165646255');
+    `;
+    await connection.query(gabrielQuery, [hashedPassword]);
+
     console.log("Migrasi berhasil!");
   } catch (error) {
     console.error("Terjadi kesalahan saat migrasi:", error);
