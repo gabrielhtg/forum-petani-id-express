@@ -86,6 +86,8 @@ const updateUser = async (req, res) => {
 
   const picturePath = req.file ? `profile_picture/${req.file.filename}` : null;
 
+  console.log(picturePath);
+
   try {
     const [user] = await pool.query(
       `SELECT * FROM users WHERE username = '${username}'`,
@@ -97,8 +99,9 @@ const updateUser = async (req, res) => {
       });
     }
 
-    await pool.query(
-      `
+    if (picturePath != null) {
+      await pool.query(
+        `
       update users
           set username = '${username}',
               email = '${email}',
@@ -108,7 +111,20 @@ const updateUser = async (req, res) => {
               foto_profil = '${picturePath}'
       where username = '${username}';
     `,
-    );
+      );
+    } else {
+      await pool.query(
+        `
+      update users
+          set username = '${username}',
+              email = '${email}',
+              name = '${name}',
+              nomor_telepon = '${nomor_telepon}',
+              pekerjaan = '${pekerjaan}',
+      where username = '${username}';
+    `,
+      );
+    }
 
     return res
       .status(200)
