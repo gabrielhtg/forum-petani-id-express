@@ -81,35 +81,33 @@ const removeUser = async (req, res) => {
   }
 };
 
-// Fungsi untuk memperbarui data user
 const updateUser = async (req, res) => {
-  const id = req.params.id; // ID dari parameter URL
-  const { name, pekerjaan, username, email, password, saldo } = req.body; // Data dari body request
+  const { name, pekerjaan, nomor_telepon, username, email } = req.body;
+
+  const picturePath = req.file ? `profile_picture/${req.file.filename}` : null;
 
   try {
-    // Cek apakah user dengan ID tersebut ada di database
-    const [user] = await pool.query(`SELECT * FROM users WHERE id = ${id}`);
+    const [user] = await pool.query(
+      `SELECT * FROM users WHERE username = '${username}'`,
+    );
     if (user.length === 0) {
       return res.status(404).json({
         status: 404,
-        data: `User dengan id ${id} tidak ditemukan!`,
+        data: `User dengan username ${username} tidak ditemukan!`,
       });
     }
 
-    // Jika password disediakan dalam update, hash ulang
-    let hashedPassword = user[0].password; // Gunakan password lama jika tidak ada yang baru
-    if (password) {
-      hashedPassword = await bcrypt.hash(password, 10);
-    }
-
-    // Update data user
     await pool.query(
       `
-            UPDATE users 
-            SET name = ?, pekerjaan = ?, username = ?, email = ?, password = ?, saldo = ?, updatedAt = NOW()
-            WHERE id = ?;
-        `,
-      [name, pekerjaan, username, email, hashedPassword, saldo, id],
+      update users
+          set username = '${username}',
+              email = '${email}',
+              name = '${name}',
+              nomor_telepon = '${nomor_telepon}',
+              pekerjaan = '${pekerjaan}',
+              foto_profil = '${picturePath}'
+      where username = '${username}';
+    `,
     );
 
     return res
