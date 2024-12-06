@@ -82,20 +82,19 @@ const removeUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { name, pekerjaan, nomor_telepon, username, email } = req.body;
+  const { name, pekerjaan, nomor_telepon, username, email, current_username } =
+    req.body;
 
   const picturePath = req.file ? `profile_picture/${req.file.filename}` : null;
 
-  console.log(picturePath);
-
   try {
     const [user] = await pool.query(
-      `SELECT * FROM users WHERE username = '${username}'`,
+      `SELECT * FROM users WHERE username = '${current_username}'`,
     );
     if (user.length === 0) {
       return res.status(404).json({
         status: 404,
-        data: `User dengan username ${username} tidak ditemukan!`,
+        data: `User dengan username ${current_username} tidak ditemukan!`,
       });
     }
 
@@ -120,20 +119,39 @@ const updateUser = async (req, res) => {
               email = '${email}',
               name = '${name}',
               nomor_telepon = '${nomor_telepon}',
-              pekerjaan = '${pekerjaan}',
-      where username = '${username}';
+              pekerjaan = '${pekerjaan}'
+      where username = '${current_username}';
     `,
       );
     }
 
     return res
       .status(200)
-      .json({ status: "ok", message: "User updated successfully" });
+      .json({ status: "ok", data: `Berhasil Memperbarui User ${username}!` });
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .json({ status: "error", message: "Error updating user", error });
+
+    if (error.errno === 1062) {
+      return res.status(500).json({
+        status: "error",
+        data: `Gagal memperbarui user dengan username ${username}. Username sudah ada sebelumnya!`,
+        error,
+      });
+    }
+
+    if (error.errno === 1064) {
+      return res.status(500).json({
+        status: "error",
+        data: `Gagal memperbarui user ${username}. Sintax SQL Error!`,
+        error,
+      });
+    }
+
+    return res.status(500).json({
+      status: "error",
+      data: `Gagal memperbarui user ${username}`,
+      error,
+    });
   }
 };
 
