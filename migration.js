@@ -56,7 +56,7 @@ const queries = [
       post_id INT NOT NULL,
       user_id VARCHAR(50) NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (post_id) REFERENCES posts(id) ,
+      FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
       FOREIGN KEY (user_id) REFERENCES users(username)
   );`,
   `CREATE TABLE product_tag (
