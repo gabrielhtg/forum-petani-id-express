@@ -41,15 +41,15 @@ const queries = [
         likes int DEFAULT 0,                                  
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        FOREIGN KEY (uploader_id) REFERENCES users(username)
+        FOREIGN KEY (uploader_id) REFERENCES users(username) ON DELETE CASCADE
     )`,
   `CREATE TABLE post_images (
         id INT PRIMARY KEY AUTO_INCREMENT,
-        post_id INT,                        
+        post_id INT ,                        
         path VARCHAR(255) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        FOREIGN KEY (post_id) REFERENCES posts(id)
+        FOREIGN KEY (post_id) REFERENCES posts(id)  ON DELETE CASCADE
     );`,
   `CREATE TABLE post_likes (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -73,8 +73,8 @@ const queries = [
         content TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        FOREIGN KEY (post_id) REFERENCES posts(id), 
-        FOREIGN KEY (user_id) REFERENCES users(username)
+        FOREIGN KEY (post_id) REFERENCES posts(id)  ON DELETE CASCADE, 
+        FOREIGN KEY (user_id) REFERENCES users(username)  ON DELETE CASCADE
     );`,
   `CREATE TABLE products(
         id int auto_increment primary key,
@@ -87,7 +87,7 @@ const queries = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         uploader_id VARCHAR(50),
-        foreign key (uploader_id) references users(username)
+        foreign key (uploader_id) references users(username)  ON DELETE CASCADE
     );`,
 ];
 
