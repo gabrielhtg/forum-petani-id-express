@@ -18,7 +18,7 @@ const config = {
 };
 
 const queries = [
-  `DROP DATABASE forum_tani_id`,
+  `DROP DATABASE IF EXISTS forum_tani_id`,
   `CREATE DATABASE forum_tani_id`,
   `USE forum_tani_id`,
   `CREATE TABLE users ( 
