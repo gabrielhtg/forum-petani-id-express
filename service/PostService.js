@@ -251,40 +251,34 @@ const remove = async (req, res) => {
 
 const update = async (req, res) => {
   const id = req.params.id; // ID dari parameter URL
-  const { name, pekerjaan, username, email, password, saldo } = req.body; // Data dari body request
+  const { caption } = req.body; // Data dari body request
 
   try {
-    const [user] = await pool.query(`SELECT * FROM users WHERE id = ${id}`);
-    if (user.length === 0) {
+    const [post] = await pool.query(`SELECT * FROM posts WHERE id = ${id}`);
+    if (post.length === 0) {
       return res.status(404).json({
         status: 404,
-        data: `User dengan id ${id} tidak ditemukan!`,
+        data: `Post dengan id ${id} tidak ditemukan!`,
       });
     }
 
-    let hashedPassword = user[0].password;
-    if (password) {
-      hashedPassword = await bcrypt.hash(password, 10);
-    }
-
-    // Update data user
     await pool.query(
       `
-            UPDATE users 
-            SET name = ?, pekerjaan = ?, username = ?, email = ?, password = ?, saldo = ?, updatedAt = NOW()
+            UPDATE posts 
+            SET caption = ?
             WHERE id = ?;
         `,
-      [name, pekerjaan, username, email, hashedPassword, saldo, id],
+      [caption, id],
     );
 
     return res
       .status(200)
-      .json({ status: "ok", message: "User updated successfully" });
+      .json({ status: "ok", message: "Post updated successfully", data: post });
   } catch (error) {
     console.error(error);
     return res
       .status(500)
-      .json({ status: "error", message: "Error updating user", error });
+      .json({ status: "error", message: "Error updating Post", error });
   }
 };
 
